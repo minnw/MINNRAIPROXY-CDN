@@ -2,9 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>MINNRAI PROXY</title>
+    <title>MINNRAI</title>
 
     <style>
         * {
@@ -13,7 +13,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             width: 100%;
             min-height: 100%;
             background: #000;
@@ -24,39 +25,211 @@
             justify-content: center;
             align-items: flex-start;
             overflow-x: hidden;
+            font-family: Arial, sans-serif;
         }
 
-        .banner-link {
-            display: block;
+        .container {
+            position: relative;
             width: 100%;
             max-width: 1920px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .banner {
-            display: block;
             width: 100%;
             height: auto;
-            object-fit: contain;
+            display: block;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Toast */
+        .toast {
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translate(-50%, -25px) scale(.9);
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 13px 22px;
+            min-width: 250px;
+
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(30, 130, 20, .96),
+                    rgba(100, 220, 25, .96)
+                );
+
+            border: 1px solid rgba(210, 255, 160, .9);
+            border-radius: 18px;
+
+            box-shadow:
+                0 0 15px rgba(100, 255, 30, .75),
+                0 0 35px rgba(50, 220, 20, .45),
+                inset 0 1px 0 rgba(255,255,255,.5);
+
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+
+            transition:
+                opacity .3s ease,
+                transform .35s cubic-bezier(.2,1.4,.4,1);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1);
+        }
+
+        .check {
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            background: #fff;
+            color: #36a915;
+
+            font-size: 18px;
+            font-weight: 900;
+
+            box-shadow: 0 0 12px rgba(255,255,255,.8);
+        }
+
+        /* Daun dekorasi */
+        .leaf {
+            position: absolute;
+            color: #b8ff52;
+            font-size: 22px;
+            opacity: .85;
+            animation: floatLeaf 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .leaf.one {
+            left: -8px;
+            top: -12px;
+            transform: rotate(-25deg);
+        }
+
+        .leaf.two {
+            right: -8px;
+            top: -10px;
+            transform: rotate(25deg);
+            animation-delay: .4s;
+        }
+
+        .leaf.three {
+            left: 10px;
+            bottom: -12px;
+            transform: rotate(25deg);
+            animation-delay: .7s;
+        }
+
+        .leaf.four {
+            right: 10px;
+            bottom: -12px;
+            transform: rotate(-25deg);
+            animation-delay: 1s;
+        }
+
+        @keyframes floatLeaf {
+            0%, 100% {
+                transform: translateY(0) rotate(-20deg);
+            }
+
+            50% {
+                transform: translateY(-5px) rotate(-5deg);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .toast {
+                top: 12px;
+                min-width: 230px;
+                padding: 11px 17px;
+                font-size: 13px;
+                border-radius: 15px;
+            }
+
+            .check {
+                width: 24px;
+                height: 24px;
+                font-size: 15px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <a
-        class="banner-link"
-        href="https://wa.me/6285143871908?text=Bang%20beli%20key%20MINNRAI%20PROXY%20%F0%9F%8D%80"
-        target="_blank"
-        rel="noopener noreferrer"
+<div class="container">
+
+    <img
+        class="banner"
+        src="https://raw.githubusercontent.com/minnw/MINNRAIPROXY-CDN/refs/heads/main/BUYKEY.png"
+        alt="MINNRAI BUY KEY"
+        onclick="copyNumber()"
     >
-        <img
-            class="banner"
-            src="https://raw.githubusercontent.com/minnw/MINNRAIPROXY-CDN/refs/heads/main/BUYKEY.png"
-            alt="MINNRAI PROXY - Beli Key"
-        >
-    </a>
+
+    <div id="toast" class="toast">
+        <span class="leaf one">🍃</span>
+        <span class="leaf two">🍃</span>
+        <span class="leaf three">🍃</span>
+        <span class="leaf four">🍃</span>
+
+        <span class="check">✓</span>
+        <span>Nomor berhasil disalin!</span>
+    </div>
+
+</div>
+
+<script>
+    const nomor = "085143871908";
+
+    async function copyNumber() {
+        try {
+            await navigator.clipboard.writeText(nomor);
+        } catch (error) {
+            const input = document.createElement("textarea");
+            input.value = nomor;
+            input.style.position = "fixed";
+            input.style.opacity = "0";
+
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand("copy");
+            input.remove();
+        }
+
+        showToast();
+    }
+
+    function showToast() {
+        const toast = document.getElementById("toast");
+
+        toast.classList.add("show");
+
+        clearTimeout(window.toastTimer);
+
+        window.toastTimer = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2200);
+    }
+</script>
 
 </body>
 </html>

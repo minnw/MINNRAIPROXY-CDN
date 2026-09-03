@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>MINNRAI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            background: #000;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1920px;
+        }
+
+        .banner {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Toast Maintenance */
+        .toast {
+            position: absolute;
+            top: 22px;
+            left: 50%;
+
+            transform: translate(-50%, -25px) scale(.9);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+
+            padding: 13px 22px;
+            min-width: 250px;
+
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(170, 105, 0, .97),
+                    rgba(255, 193, 7, .97)
+                );
+
+            border: 1px solid rgba(255, 235, 120, .95);
+            border-radius: 18px;
+
+            box-shadow:
+                0 0 15px rgba(255, 193, 7, .75),
+                0 0 35px rgba(255, 170, 0, .45),
+                inset 0 1px 0 rgba(255,255,255,.5);
+
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+
+            transition:
+                opacity .3s ease,
+                transform .35s cubic-bezier(.2,1.4,.4,1);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1);
+        }
+
+        .warning {
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            background: #fff;
+            color: #d89000;
+
+            font-size: 18px;
+            font-weight: 900;
+
+            box-shadow: 0 0 12px rgba(255,255,255,.8);
+        }
+
+        /* Dekorasi */
+        .leaf {
+            position: absolute;
+            color: #ffe082;
+            font-size: 22px;
+            opacity: .85;
+            animation: floatLeaf 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .leaf.one {
+            left: -8px;
+            top: -12px;
+            transform: rotate(-25deg);
+        }
+
+        .leaf.two {
+            right: -8px;
+            top: -10px;
+            transform: rotate(25deg);
+            animation-delay: .4s;
+        }
+
+        .leaf.three {
+            left: 10px;
+            bottom: -12px;
+            transform: rotate(25deg);
+            animation-delay: .7s;
+        }
+
+        .leaf.four {
+            right: 10px;
+            bottom: -12px;
+            transform: rotate(-25deg);
+            animation-delay: 1s;
+        }
+
+        @keyframes floatLeaf {
+            0%, 100% {
+                transform: translateY(0) rotate(-20deg);
+            }
+
+            50% {
+                transform: translateY(-5px) rotate(-5deg);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .toast {
+                top: 12px;
+                min-width: 230px;
+                padding: 11px 17px;
+                font-size: 13px;
+                border-radius: 15px;
+            }
+
+            .warning {
+                width: 24px;
+                height: 24px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <img
+        class="banner"
+        src="https://raw.githubusercontent.com/minnw/MINNRAIPROXY-CDN/refs/heads/main/MINNRAI-MAINTENANCE.png"
+        alt="MINNRAI MAINTENANCE"
+        onclick="handleClick()"
+    >
+
+    <div id="toast" class="toast">
+
+        <span class="leaf one">🍃</span>
+        <span class="leaf two">🍃</span>
+        <span class="leaf three">🍃</span>
+        <span class="leaf four">🍃</span>
+
+        <span class="warning">!</span>
+
+        <span>MAINTENANCE</span>
+
+    </div>
+
+</div>
+
+<script>
+
+    const whatsappChannel =
+        "https://whatsapp.com/channel/0029Vb8tnah17EmqfLtn7K37";
+
+    function handleClick() {
+
+        const toast = document.getElementById("toast");
+
+        // Tampilkan toast
+        toast.classList.add("show");
+
+        // Setelah toast selesai ditampilkan
+        setTimeout(() => {
+
+            // Hilangkan toast
+            toast.classList.remove("show");
+
+            // Tunggu animasi toast selesai
+            setTimeout(() => {
+
+                openWhatsApp();
+
+            }, 300);
+
+        }, 2200);
+    }
+
+
+    function openWhatsApp() {
+
+        /*
+         * WhatsApp Android biasa
+         * Package: com.whatsapp
+         */
+
+        const isAndroid = /Android/i.test(navigator.userAgent);
+
+        if (isAndroid) {
+
+            const intent =
+                "intent://channel/0029Vb8tnah17EmqfLtn7K37" +
+                "#Intent;" +
+                "scheme=https;" +
+                "package=com.whatsapp;" +
+                "S.browser_fallback_url=" +
+                encodeURIComponent(whatsappChannel) +
+                ";" +
+                "end";
+
+            window.location.href = intent;
+
+        } else {
+
+            // Jika bukan Android
+            window.location.href = whatsappChannel;
+
+        }
+    }
+
+</script>
+
+</body>
+</html>
